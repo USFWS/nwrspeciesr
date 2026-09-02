@@ -1,39 +1,35 @@
 # nwrspeciesr 0.1.0
 
-<!-- 
-Delete these comments when customizing your repository with this template.
+Initial release. Provides a read-only R interface to the U.S. Fish and
+Wildlife Service NWRSpecies (formerly FWSpecies) occurrence database.
 
-All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/) and adheres to [Semantic Versioning](http://semver.org/).*
+## Features
 
->-   *This file is for humans, not machines.*
->-   *There should be an entry for every single version.*
->-   *The same types of changes should be grouped.*
->-   *Versions and sections should be linkable.*
->-   *The latest version comes first.*
->-   *The release date of each version is displayed.*
->-   *Mention whether you follow Semantic Versioning.*
--->
+* `get_species_list()` retrieves refuge species occurrence records from the
+  public `SpeciesList/items` endpoint, with optional filters for region,
+  refuge, taxonomic category, occurrence, and ITIS TSN, plus sorting and
+  pagination.
+* `download_species_list()` retrieves records from the CSV `DownloadFile`
+  endpoint, the documented way to pull all records in a single call when
+  combined with a large `rows_per_page`.
+* `get_species_categories()` and `get_species_occurrences()` return the valid
+  category and occurrence values accepted by the API.
+* `get_refuges()` retrieves a live refuge name / unit code crosswalk from the
+  FWS Unit REST API via the suggested **fwsunitr** package.
 
-# your-repository-name 0.1.0
+## Refuge name resolution
 
-General notes about this version can go here.
+* `get_species_list()` and `download_species_list()` accept a `refuge_name`
+  argument as an alternative to `refuge_code`. Matching is case-insensitive
+  and tolerant of common variants (e.g. "Kenai", "kenai nwr", "Kenai National
+  Wildlife Refuge").
+* Names that match more than one refuge (e.g. "Yukon", matching both Yukon
+  Delta and Yukon Flats) return an informative error listing the candidates.
+* A bundled `refuges` crosswalk is used by default; a custom or live table may
+  be supplied via the `crosswalk` argument.
 
-## Added
+## Input validation
 
--   A list of new features
-
-## Changed
-
--   A list of changes to the existing functionality
-
-## Deprecated
-
--   A list of soon-to-be removed features
-
-## Removed
-
--   A list of now removed features
-
-## Fixed
-
--   A list of bugs that were fixed
+* `category_name`, `occurrence`, and `sort_by` are validated locally against
+  their documented value sets before a request is sent. Matching is
+  case-insensitive and values are normalized to the casing the API expects.
