@@ -10,7 +10,7 @@ License: CC0
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/USFWS/nwrspeciesr
+URL: https://github.com/USFWS/nwrspeciesr, https://solid-lamp-km35j47.pages.github.io/
 BugReports: https://github.com/USFWS/nwrspeciesr/issues
 Imports:
     httr2 (>= 1.0.0),
