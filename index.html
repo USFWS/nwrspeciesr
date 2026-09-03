@@ -59,8 +59,7 @@
 <!-- badges: end -->
 <div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="nwrspeciesr-">nwrspeciesr 
-<a class="anchor" aria-label="anchor" href="#nwrspeciesr-"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="nwrspeciesr">nwrspeciesr<a class="anchor" aria-label="anchor" href="#nwrspeciesr"></a>
 </h1>
 </div>
 <div class="section level2">
@@ -94,28 +93,29 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/USFWS/nwrspeciesr" class="external-link">nwrspeciesr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># All bird species recorded as Present across Region 1 refuges</span></span>
-<span><span class="fu"><a href="reference/get_species_list.html">get_species_list</a></span><span class="op">(</span>region_number <span class="op">=</span> <span class="fl">1</span>, category_name <span class="op">=</span> <span class="st">"Bird"</span>,</span>
+<span><span class="co"># All bird species recorded as Present across Region 7 refuges</span></span>
+<span><span class="fu"><a href="reference/get_species_list.html">get_species_list</a></span><span class="op">(</span>region_number <span class="op">=</span> <span class="fl">7</span>, category_name <span class="op">=</span> <span class="st">"Bird"</span>,</span>
 <span>                 occurrence <span class="op">=</span> <span class="st">"Present"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># A single refuge by unit (cost center) code</span></span>
-<span><span class="fu"><a href="reference/get_species_list.html">get_species_list</a></span><span class="op">(</span>refuge_code <span class="op">=</span> <span class="st">"FF08RANH00"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/get_species_list.html">get_species_list</a></span><span class="op">(</span>refuge_code <span class="op">=</span> <span class="st">"FF07RKDK00"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Look up valid filter values</span></span>
 <span><span class="fu"><a href="reference/get_species_categories.html">get_species_categories</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/get_species_occurrences.html">get_species_occurrences</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Retrieve all records for a refuge via the CSV download endpoint</span></span>
-<span><span class="fu"><a href="reference/download_species_list.html">download_species_list</a></span><span class="op">(</span>refuge_code <span class="op">=</span> <span class="st">"FF08RANH00"</span>, rows_per_page <span class="op">=</span> <span class="fl">130000</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/download_species_list.html">download_species_list</a></span><span class="op">(</span>refuge_code <span class="op">=</span> <span class="st">"FF07RKDK00"</span>, rows_per_page <span class="op">=</span> <span class="fl">130000</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="filtering-by-refuge-name">Filtering by refuge name<a class="anchor" aria-label="anchor" href="#filtering-by-refuge-name"></a>
 </h3>
 <p>You can filter by refuge name instead of unit code. Matching is case-insensitive and tolerant of common variants (e.g. “Kenai”, “kenai nwr”, “Kenai National Wildlife Refuge”):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/get_species_list.html">get_species_list</a></span><span class="op">(</span>refuge_name <span class="op">=</span> <span class="st">"kenai nwr"</span><span class="op">)</span></span></code></pre></div>
-<p>Because the API filters on unit code rather than name, name matching relies on a refuge crosswalk. You may supply your own via the <code>crosswalk</code> argument:</p>
+<p>Because the API filters on unit code rather than name, name matching relies on a refuge crosswalk. A bundled snapshot (the <code>refuges</code> dataset) is used by default. For a current table, use <code><a href="reference/get_refuges.html">get_refuges()</a></code>, which pulls live from the FWS Unit REST API via the <a href="https://github.com/USFWS/fwsunitr" class="external-link">fwsunitr</a> package, and pass it via the <code>crosswalk</code> argument:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/get_species_list.html">get_species_list</a></span><span class="op">(</span>refuge_name <span class="op">=</span> <span class="st">"Kenai"</span>, crosswalk <span class="op">=</span> <span class="va">my_refuge_table</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_species_list.html">get_species_list</a></span><span class="op">(</span>refuge_name <span class="op">=</span> <span class="st">"Kenai"</span>, crosswalk <span class="op">=</span> <span class="fu"><a href="reference/get_refuges.html">get_refuges</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Names that match more than one refuge (e.g. “Yukon”, which matches both Yukon Delta and Yukon Flats) return an informative error listing the candidates, so you can supply a more specific name.</p>
 </div>
 </div>
 <div class="section level2">
