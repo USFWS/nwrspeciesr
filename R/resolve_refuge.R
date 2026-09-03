@@ -38,15 +38,31 @@ refuge_ambiguous_msg <- function(input, candidates) {
 
 #' Load the bundled refuge crosswalk
 #'
-#' Retrieves the packaged `refuges` dataset regardless of the `LazyData`
-#' setting. Returns `NULL` if the dataset has not been built.
+#' Retrieves the packaged `refuges` dataset across installed and development
+#' contexts. Returns `NULL` if the dataset cannot be found.
 #'
 #' @return A tibble, or `NULL`.
 #' @keywords internal
 #' @noRd
 bundled_refuges <- function() {
+  out <- tryCatch(
+    get("refuges", envir = asNamespace("nwrspeciesr")),
+    error = function(err) NULL
+  )
+  if (!is.null(out)) {
+    return(out)
+  }
   e <- new.env(parent = emptyenv())
-  utils::data("refuges", package = "nwrspeciesr", envir = e)
+  ok <- tryCatch(
+    {
+      utils::data("refuges", package = "nwrspeciesr", envir = e)
+      TRUE
+    },
+    error = function(err) FALSE
+  )
+  if (!ok) {
+    return(NULL)
+  }
   get0("refuges", envir = e, inherits = FALSE)
 }
 
@@ -77,11 +93,7 @@ resolve_refuge_code <- function(refuge_name, crosswalk = NULL) {
   }
 
   if (is.null(crosswalk)) {
-    crosswalk <- get0(
-      "refuges",
-      envir = asNamespace("nwrspeciesr"),
-      inherits = FALSE
-    )
+    crosswalk <- tryCatch(bundled_refuges(), error = function(e) NULL)
     if (is.null(crosswalk)) {
       stop(
         "No refuge crosswalk is available. Supply one via `crosswalk`.",

@@ -6,8 +6,7 @@
 
 <!-- badges: end -->
 
-# nwrspeciesr <a href="https://usfws.github.io/nwrspeciesr/"><img src="man/figures/logo.png" align="right" height="120" alt="The R package hex." /></a>
-
+# nwrspeciesr
 
 ## Overview
 
@@ -44,19 +43,19 @@ pak::pak("USFWS/nwrspeciesr")
 ``` r
 library(nwrspeciesr)
 
-# All bird species recorded as Present across Region 1 refuges
-get_species_list(region_number = 1, category_name = "Bird",
+# All bird species recorded as Present across Region 7 refuges
+get_species_list(region_number = 7, category_name = "Bird",
                  occurrence = "Present")
 
 # A single refuge by unit (cost center) code
-get_species_list(refuge_code = "FF08RANH00")
+get_species_list(refuge_code = "FF07RKDK00")
 
 # Look up valid filter values
 get_species_categories()
 get_species_occurrences()
 
 # Retrieve all records for a refuge via the CSV download endpoint
-download_species_list(refuge_code = "FF08RANH00", rows_per_page = 130000)
+download_species_list(refuge_code = "FF07RKDK00", rows_per_page = 130000)
 ```
 
 ### Filtering by refuge name
@@ -70,11 +69,18 @@ get_species_list(refuge_name = "kenai nwr")
 ```
 
 Because the API filters on unit code rather than name, name matching relies on
-a refuge crosswalk. You may supply your own via the `crosswalk` argument:
+a refuge crosswalk. A bundled snapshot (the `refuges` dataset) is used by
+default. For a current table, use `get_refuges()`, which pulls live from the
+FWS Unit REST API via the [fwsunitr](https://github.com/USFWS/fwsunitr)
+package, and pass it via the `crosswalk` argument:
 
 ``` r
-get_species_list(refuge_name = "Kenai", crosswalk = my_refuge_table)
+get_species_list(refuge_name = "Kenai", crosswalk = get_refuges())
 ```
+
+Names that match more than one refuge (e.g. "Yukon", which matches both Yukon
+Delta and Yukon Flats) return an informative error listing the candidates, so
+you can supply a more specific name.
 
 ## Getting help
 
