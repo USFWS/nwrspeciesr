@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/USFWS/nwrspeciesr/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/USFWS/nwrspeciesr/blob/v0.1.0/DESCRIPTION)
 
 Cobb M (2026). *nwrspeciesr: Interface to the FWS NWRSpecies Occurrence
 Database API*. R package version 0.1.0,
