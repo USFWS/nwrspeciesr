@@ -6,7 +6,13 @@
 
 <!-- badges: end -->
 
-# nwrspeciesr
+# nwrspeciesr <a href="https://usfws.github.io/fwsunitr/"><img src="man/figures/logo.png" align="right" height="120" alt="The R package hex." /></a>
+
+> **Note:** This project was developed with the assistance of Claude, a
+> generative AI tool developed by Anthropic. AI-generated content has been
+> reviewed and edited by the package maintainer, who takes responsibility for
+> the final content.
+
 
 ## Overview
 
