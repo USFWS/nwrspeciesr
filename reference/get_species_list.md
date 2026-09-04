@@ -40,28 +40,28 @@ get_species_list(
   Character scalar. Refuge name in any common form (e.g. "Kenai", "kenai
   nwr", "Kenai National Wildlife Refuge"), resolved to a `refuge_code`
   via the
-  [refuges](https://solid-lamp-km35j47.pages.github.io/reference/refuges.md)
+  [refuges](https://usfws.github.io/nwrspeciesr/reference/refuges.md)
   crosswalk. Supply either `refuge_code` or `refuge_name`, not both.
 
 - crosswalk:
 
   Data frame with `refuge_code` and `refuge_name` columns used to
   resolve `refuge_name`. If `NULL` (default), the bundled
-  [refuges](https://solid-lamp-km35j47.pages.github.io/reference/refuges.md)
+  [refuges](https://usfws.github.io/nwrspeciesr/reference/refuges.md)
   dataset is used.
 
 - category_name:
 
   Character scalar. Taxonomic category (e.g. "Bird"). Validated against
   the documented category set; see
-  [`get_species_categories()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_categories.md)
+  [`get_species_categories()`](https://usfws.github.io/nwrspeciesr/reference/get_species_categories.md)
   for the live list.
 
 - occurrence:
 
   Character scalar. One of "NotPresent", "Present", "ProbablyPresent",
   "Unconfirmed". See
-  [`get_species_occurrences()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_occurrences.md).
+  [`get_species_occurrences()`](https://usfws.github.io/nwrspeciesr/reference/get_species_occurrences.md).
 
 - itis_tsn:
 

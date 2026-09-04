@@ -3,11 +3,11 @@
 Retrieves current national wildlife refuge units from the FWS Unit REST
 API via the fwsunitr package and returns a crosswalk suitable for the
 `crosswalk` argument of
-[`get_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_list.md)
+[`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md)
 and
-[`download_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/download_species_list.md),
+[`download_species_list()`](https://usfws.github.io/nwrspeciesr/reference/download_species_list.md),
 or as a live alternative to the bundled
-[refuges](https://solid-lamp-km35j47.pages.github.io/reference/refuges.md)
+[refuges](https://usfws.github.io/nwrspeciesr/reference/refuges.md)
 dataset.
 
 ## Usage

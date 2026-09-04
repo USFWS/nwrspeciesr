@@ -2,7 +2,7 @@
 
 Queries the `SpeciesList/occurences` endpoint for the occurrence values
 accepted by
-[`get_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_list.md).
+[`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md).
 Note the endpoint path is spelled "occurences" (single r) in the API and
 is used as-is.
 

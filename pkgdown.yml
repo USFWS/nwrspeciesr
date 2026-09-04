@@ -2,7 +2,7 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2026-09-03T23:49Z
+last_built: 2026-09-04T00:07Z
 urls:
-  reference: https://solid-lamp-km35j47.pages.github.io/reference
-  article: https://solid-lamp-km35j47.pages.github.io/articles
+  reference: https://usfws.github.io/nwrspeciesr/reference
+  article: https://usfws.github.io/nwrspeciesr/articles

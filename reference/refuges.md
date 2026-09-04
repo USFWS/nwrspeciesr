@@ -2,9 +2,9 @@
 
 A one-to-one crosswalk between refuge unit (cost center) codes and
 refuge names, used by
-[`get_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_list.md)
+[`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md)
 and
-[`download_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/download_species_list.md)
+[`download_species_list()`](https://usfws.github.io/nwrspeciesr/reference/download_species_list.md)
 to resolve a `refuge_name` argument to the `RefugeCode` the NWRSpecies
 API expects.
 
@@ -44,6 +44,6 @@ fwsunitr package. See `data-raw/refuges.R`.
 ## Details
 
 This is a bundled snapshot. For a live table, use
-[`get_refuges()`](https://solid-lamp-km35j47.pages.github.io/reference/get_refuges.md),
+[`get_refuges()`](https://usfws.github.io/nwrspeciesr/reference/get_refuges.md),
 which pulls current refuge units from the FWS Unit REST API via the
 fwsunitr package. Regenerate the snapshot with `data-raw/refuges.R`.

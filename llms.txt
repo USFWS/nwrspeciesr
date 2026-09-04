@@ -1,5 +1,10 @@
 # nwrspeciesr
 
+> **Note:** This project was developed with the assistance of Claude, a
+> generative AI tool developed by Anthropic. AI-generated content has
+> been reviewed and edited by the package maintainer, who takes
+> responsibility for the final content.
+
 ## Overview
 
 **nwrspeciesr** is an R interface to the U.S. Fish and Wildlife Service
@@ -9,15 +14,15 @@ lists and related lookup values from the public NWRSpecies web services.
 
 Current functionality (read-only) includes:
 
-- [`get_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_list.md):
+- [`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md):
   retrieve species occurrence records, with optional filters for region,
   refuge, taxonomic category, occurrence, and ITIS TSN.
-- [`download_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/download_species_list.md):
+- [`download_species_list()`](https://usfws.github.io/nwrspeciesr/reference/download_species_list.md):
   retrieve the full species list via the CSV download endpoint (useful
   for pulling all records in a single call).
-- [`get_species_categories()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_categories.md):
+- [`get_species_categories()`](https://usfws.github.io/nwrspeciesr/reference/get_species_categories.md):
   list valid taxonomic category values.
-- [`get_species_occurrences()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_occurrences.md):
+- [`get_species_occurrences()`](https://usfws.github.io/nwrspeciesr/reference/get_species_occurrences.md):
   list valid occurrence values.
 
 Only the public `SpeciesListBasic` method is currently exposed by the
@@ -70,7 +75,7 @@ get_species_list(refuge_name = "kenai nwr")
 Because the API filters on unit code rather than name, name matching
 relies on a refuge crosswalk. A bundled snapshot (the `refuges` dataset)
 is used by default. For a current table, use
-[`get_refuges()`](https://solid-lamp-km35j47.pages.github.io/reference/get_refuges.md),
+[`get_refuges()`](https://usfws.github.io/nwrspeciesr/reference/get_refuges.md),
 which pulls live from the FWS Unit REST API via the
 [fwsunitr](https://github.com/USFWS/fwsunitr) package, and pass it via
 the `crosswalk` argument:
@@ -108,19 +113,19 @@ License](https://creativecommons.org/publicdomain/zero/1.0/).
 
 ## All functions
 
-- [`download_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/download_species_list.md)
+- [`download_species_list()`](https://usfws.github.io/nwrspeciesr/reference/download_species_list.md)
   : Download the NWRSpecies species list as a data frame
-- [`get_refuges()`](https://solid-lamp-km35j47.pages.github.io/reference/get_refuges.md)
+- [`get_refuges()`](https://usfws.github.io/nwrspeciesr/reference/get_refuges.md)
   : Get the refuge name / unit code crosswalk from the FWS Unit API
-- [`get_species_categories()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_categories.md)
+- [`get_species_categories()`](https://usfws.github.io/nwrspeciesr/reference/get_species_categories.md)
   : Get valid NWRSpecies taxonomic categories
-- [`get_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_list.md)
+- [`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md)
   : Get refuge species occurrence records from NWRSpecies
-- [`get_species_occurrences()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_occurrences.md)
+- [`get_species_occurrences()`](https://usfws.github.io/nwrspeciesr/reference/get_species_occurrences.md)
   : Get valid NWRSpecies occurrence values
-- [`nwrspeciesr`](https://solid-lamp-km35j47.pages.github.io/reference/nwrspeciesr-package.md)
-  [`nwrspeciesr-package`](https://solid-lamp-km35j47.pages.github.io/reference/nwrspeciesr-package.md)
+- [`nwrspeciesr`](https://usfws.github.io/nwrspeciesr/reference/nwrspeciesr-package.md)
+  [`nwrspeciesr-package`](https://usfws.github.io/nwrspeciesr/reference/nwrspeciesr-package.md)
   : nwrspeciesr: Interface to the FWS NWRSpecies Occurrence Database API
-- [`refuges`](https://solid-lamp-km35j47.pages.github.io/reference/refuges.md)
+- [`refuges`](https://usfws.github.io/nwrspeciesr/reference/refuges.md)
   : USFWS refuge name / unit code crosswalk
 

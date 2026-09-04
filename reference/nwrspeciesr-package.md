@@ -7,21 +7,21 @@ values from the public web services.
 
 ## Retrieving species records
 
-- [`get_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_list.md)
+- [`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md)
   queries the `SpeciesList/items` endpoint (paged JSON) with optional
   filters for region, refuge, category, occurrence, and ITIS TSN.
 
-- [`download_species_list()`](https://solid-lamp-km35j47.pages.github.io/reference/download_species_list.md)
+- [`download_species_list()`](https://usfws.github.io/nwrspeciesr/reference/download_species_list.md)
   queries the CSV `DownloadFile` endpoint, the documented way to
   retrieve all records in a single call when combined with a large
   `rows_per_page`.
 
 ## Lookup values
 
-- [`get_species_categories()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_categories.md)
+- [`get_species_categories()`](https://usfws.github.io/nwrspeciesr/reference/get_species_categories.md)
   returns valid taxonomic category names.
 
-- [`get_species_occurrences()`](https://solid-lamp-km35j47.pages.github.io/reference/get_species_occurrences.md)
+- [`get_species_occurrences()`](https://usfws.github.io/nwrspeciesr/reference/get_species_occurrences.md)
   returns valid occurrence values.
 
 ## API details
