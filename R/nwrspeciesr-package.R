@@ -21,6 +21,13 @@
 #'   \item [get_species_occurrences()] returns valid occurrence values.
 #' }
 #'
+#' @section Uploading and editing records:
+#' The upload functions target internal, write-enabled endpoints and require an
+#' API key in `NWRSPECIES_API_KEY`. They default to the staging server at
+#' `https://staging-iris.fws.gov/APPS/SpeciesAPI/` while
+#' the upload API is under testing. These functions can modify NWRSpecies data;
+#' review records and permissions carefully before use.
+#'
 #' @section API details:
 #' All functions target the public web services at
 #' `https://iris.fws.gov/APPS/SpeciesAPI/api/` and require an `api_version`

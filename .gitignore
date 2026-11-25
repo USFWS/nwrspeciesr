@@ -22,3 +22,7 @@ README.html
 DISCLAIMER.html
 NEWS.html
 docs
+
+# Posit Assistant files
+.posit/assistant
+AGENTS.md

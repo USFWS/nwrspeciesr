@@ -32,7 +32,8 @@ names, used by \code{\link[=get_species_list]{get_species_list()}} and \code{\li
 a \code{refuge_name} argument to the \code{RefugeCode} the NWRSpecies API expects.
 }
 \details{
-This is a bundled snapshot. For a live table, use \code{\link[=get_refuges]{get_refuges()}}, which
+This is a bundled snapshot generated from the FWS Unit REST API on
+2026-09-02. For a live table, use \code{\link[=get_refuges]{get_refuges()}}, which
 pulls current refuge units from the FWS Unit REST API via the \pkg{fwsunitr}
 package. Regenerate the snapshot with \code{data-raw/refuges.R}.
 }

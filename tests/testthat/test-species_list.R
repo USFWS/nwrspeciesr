@@ -74,3 +74,36 @@ test_that("enumerated arguments match case-insensitively and normalize", {
   expect_match(captured$url, "Occurrence=Present")
   expect_match(captured$url, "SortBy=Sci")
 })
+
+
+test_that("invalid scalar and range arguments fail locally", {
+  expect_error(get_species_list(region_number = 9), "1 through 8")
+  expect_error(get_species_list(rows_per_page = 0), "positive integer")
+  expect_error(get_species_list(page_number = c(1, 2)), "positive integer")
+  expect_error(get_species_list(api_version = NA_character_), "non-missing")
+  expect_error(get_species_list(category_name = c("Bird", "Fish")), "single")
+})
+
+
+test_that("wrapped record lists are converted to a tibble", {
+  body <- list(
+    items = list(
+      list(id = 1, name = "one"),
+      list(id = 2, name = "two")
+    )
+  )
+
+  result <- nwrs_as_tibble(body)
+
+  expect_s3_class(result, "tbl_df")
+  expect_equal(result$id, c(1, 2))
+  expect_equal(result$name, c("one", "two"))
+})
+
+
+test_that("unsupported response shapes raise a schema error", {
+  expect_error(
+    nwrs_as_tibble(list(metadata = list(version = 1))),
+    class = "nwrspeciesr_schema_error"
+  )
+})

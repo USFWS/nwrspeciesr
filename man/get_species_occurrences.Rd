@@ -14,8 +14,10 @@ A tibble of occurrence values.
 }
 \description{
 Queries the \code{SpeciesList/occurences} endpoint for the occurrence values
-accepted by \code{\link[=get_species_list]{get_species_list()}}. Note the endpoint path is spelled
-"occurences" (single r) in the API and is used as-is.
+accepted by \code{\link[=get_species_list]{get_species_list()}}. The default lookup is for API version 1.0;
+supply \code{api_version} explicitly when using another API version. Note the
+endpoint path is spelled "occurences" (single r) in the API and is used
+as-is.
 }
 \examples{
 \dontrun{

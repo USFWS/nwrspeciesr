@@ -16,7 +16,7 @@ normalize_refuge <- function(x) {
     stringr::str_replace_all("wildlife refuge", " ") |>
     stringr::str_replace_all("\\bnwrs?\\b", " ") |>
     stringr::str_replace_all("\\brefuge\\b", " ") |>
-    stringr::str_replace_all("[^a-z0-9]+", " ") |>
+    stringr::str_replace_all("[^[:alnum:]]+", " ") |>
     stringr::str_squish()
 }
 
@@ -32,14 +32,11 @@ refuge_ambiguous_msg <- function(input, candidates) {
   sprintf(
     "'%s' matched multiple refuges: %s. Please be more specific.",
     input,
-    paste(candidates, collapse = ", ")
+    paste(unique(candidates), collapse = ", ")
   )
 }
 
 #' Load the bundled refuge crosswalk
-#'
-#' Retrieves the packaged `refuges` dataset across installed and development
-#' contexts. Returns `NULL` if the dataset cannot be found.
 #'
 #' @return A tibble, or `NULL`.
 #' @keywords internal
@@ -70,13 +67,10 @@ bundled_refuges <- function() {
 #'
 #' Matches a flexibly-entered refuge name to a single `refuge_code` using the
 #' package [refuges] crosswalk. Matching is case-insensitive and tolerant of
-#' common suffixes (e.g. "NWR", "Refuge", "National Wildlife Refuge"). An exact
-#' normalized match is tried first, then a whole-token partial match; if neither
-#' yields a single result, an informative error is raised with the closest
-#' candidates.
+#' common suffixes. Exact normalized matches are tried before whole-token
+#' partial matches. Ambiguous and unmatched inputs produce informative errors.
 #'
-#' @param refuge_name Character scalar. Refuge name in any common form
-#'   (e.g. "Kenai", "kenai nwr", "Kenai National Wildlife Refuge").
+#' @param refuge_name Character scalar. Refuge name in any common form.
 #' @param crosswalk Data frame with `refuge_code` and `refuge_name` columns.
 #'   If `NULL` (default), the bundled [refuges] dataset is used.
 #'
@@ -89,67 +83,117 @@ resolve_refuge_code <- function(refuge_name, crosswalk = NULL) {
       length(refuge_name) != 1L ||
       is.na(refuge_name)
   ) {
-    stop("`refuge_name` must be a single non-missing string.", call. = FALSE)
+    rlang::abort(
+      "`refuge_name` must be a single non-missing character value.",
+      call = rlang::caller_env()
+    )
   }
 
   if (is.null(crosswalk)) {
-    crosswalk <- tryCatch(bundled_refuges(), error = function(e) NULL)
+    crosswalk <- bundled_refuges()
     if (is.null(crosswalk)) {
-      stop(
+      rlang::abort(
         "No refuge crosswalk is available. Supply one via `crosswalk`.",
-        call. = FALSE
+        call = rlang::caller_env()
       )
     }
   }
-  if (!all(c("refuge_code", "refuge_name") %in% names(crosswalk))) {
-    stop(
-      "`crosswalk` must have `refuge_code` and `refuge_name` columns.",
-      call. = FALSE
+
+  if (
+    !is.data.frame(crosswalk) ||
+      !all(c("refuge_code", "refuge_name") %in% names(crosswalk))
+  ) {
+    rlang::abort(
+      paste0(
+        "`crosswalk` must be a data frame with `refuge_code` and ",
+        "`refuge_name` columns."
+      ),
+      call = rlang::caller_env()
+    )
+  }
+
+  if (
+    !is.character(crosswalk$refuge_code) ||
+      !is.character(crosswalk$refuge_name)
+  ) {
+    rlang::abort(
+      "`crosswalk$refuge_code` and `crosswalk$refuge_name` must be character.",
+      call = rlang::caller_env()
     )
   }
 
   key <- normalize_refuge(refuge_name)
-  if (!nzchar(key)) {
-    stop("`refuge_name` is empty after normalization.", call. = FALSE)
+  if (is.na(key) || !nzchar(key)) {
+    rlang::abort(
+      "`refuge_name` is empty after normalization.",
+      call = rlang::caller_env()
+    )
+  }
+
+  valid <- !is.na(crosswalk$refuge_code) &
+    nzchar(trimws(crosswalk$refuge_code)) &
+    !is.na(crosswalk$refuge_name) &
+    nzchar(trimws(crosswalk$refuge_name))
+  crosswalk <- crosswalk[valid, , drop = FALSE]
+
+  if (nrow(crosswalk) == 0L) {
+    rlang::abort(
+      "`crosswalk` has no rows with non-missing refuge codes and names.",
+      call = rlang::caller_env()
+    )
   }
 
   norm <- normalize_refuge(crosswalk$refuge_name)
+  exact <- which(!is.na(norm) & norm == key)
 
-  # 1. Exact normalized match.
-  hit <- which(norm == key)
-  if (length(hit) == 1L) {
-    return(crosswalk$refuge_code[hit])
-  }
-  if (length(hit) > 1L) {
-    stop(
-      refuge_ambiguous_msg(refuge_name, crosswalk$refuge_name[hit]),
-      call. = FALSE
+  if (length(exact) > 0L) {
+    codes <- unique(crosswalk$refuge_code[exact])
+    if (length(codes) == 1L) {
+      return(codes[[1L]])
+    }
+    rlang::abort(
+      refuge_ambiguous_msg(refuge_name, crosswalk$refuge_name[exact]),
+      call = rlang::caller_env()
     )
   }
 
-  # 2. Whole-token partial match (key appears as a full token sequence).
-  padded_norm <- ifelse(is.na(norm), NA_character_, paste0(" ", norm, " "))
+  padded_norm <- paste0(" ", norm, " ")
   padded_key <- paste0(" ", key, " ")
-  part <- which(stringr::str_detect(padded_norm, stringr::fixed(padded_key)))
-  if (length(part) == 1L) {
-    return(crosswalk$refuge_code[part])
-  }
-  if (length(part) > 1L) {
-    stop(
-      refuge_ambiguous_msg(refuge_name, crosswalk$refuge_name[part]),
-      call. = FALSE
+  partial <- which(
+    !is.na(norm) &
+      stringr::str_detect(padded_norm, stringr::fixed(padded_key))
+  )
+
+  if (length(partial) > 0L) {
+    codes <- unique(crosswalk$refuge_code[partial])
+    if (length(codes) == 1L) {
+      return(codes[[1L]])
+    }
+    rlang::abort(
+      refuge_ambiguous_msg(refuge_name, crosswalk$refuge_name[partial]),
+      call = rlang::caller_env()
     )
   }
 
-  # 3. No match: suggest the closest names by edit distance.
-  d <- utils::adist(key, norm)[1, ]
-  near <- crosswalk$refuge_name[order(d)][seq_len(min(3L, length(d)))]
-  stop(
+  valid_norm <- !is.na(norm) & nzchar(norm)
+  if (!any(valid_norm)) {
+    rlang::abort(
+      sprintf("No refuge matched '%s'.", refuge_name),
+      call = rlang::caller_env()
+    )
+  }
+
+  distances <- utils::adist(key, norm[valid_norm])[1, ]
+  candidates <- crosswalk$refuge_name[valid_norm]
+  nearest <- order(distances, candidates)
+  nearest <- nearest[seq_len(min(3L, length(nearest)))]
+
+  rlang::abort(
     sprintf(
       "No refuge matched '%s'. Did you mean: %s?",
       refuge_name,
-      paste(near, collapse = ", ")
+      paste(candidates[nearest], collapse = ", ")
     ),
-    call. = FALSE
+    call = rlang::caller_env()
   )
 }

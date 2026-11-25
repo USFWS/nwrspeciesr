@@ -17,7 +17,7 @@ via the \pkg{fwsunitr} package and returns a crosswalk suitable for the
 or as a live alternative to the bundled \link{refuges} dataset.
 }
 \details{
-Requires the suggested \pkg{fwsunitr} package. The returned \code{refuge_code}
+Uses the automatically installed \pkg{fwsunitr} package. The returned \code{refuge_code}
 values are the unit (cost center) codes the NWRSpecies API expects as
 \code{RefugeCode}. \code{region_number} is derived from the Unit API region code
 (e.g. "R0007" becomes 7).

@@ -105,3 +105,34 @@ test_that("supplying both refuge_code and refuge_name errors", {
     "not both"
   )
 })
+
+
+test_that("missing crosswalk rows are ignored", {
+  crosswalk <- tibble::tibble(
+    refuge_code = c("A", "B"),
+    refuge_name = c("Kenai National Wildlife Refuge", NA_character_)
+  )
+
+  expect_equal(resolve_refuge_code("Kenai", crosswalk), "A")
+})
+
+test_that("conflicting duplicate names are ambiguous", {
+  crosswalk <- tibble::tibble(
+    refuge_code = c("A", "B"),
+    refuge_name = rep("Kenai National Wildlife Refuge", 2)
+  )
+
+  expect_error(
+    resolve_refuge_code("Kenai", crosswalk),
+    "multiple refuges"
+  )
+})
+
+test_that("invalid crosswalk columns are rejected", {
+  crosswalk <- tibble::tibble(
+    refuge_code = 1,
+    refuge_name = "Kenai National Wildlife Refuge"
+  )
+
+  expect_error(resolve_refuge_code("Kenai", crosswalk), "must be character")
+})

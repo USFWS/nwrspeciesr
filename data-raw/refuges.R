@@ -1,11 +1,10 @@
 ## Build the `refuges` crosswalk shipped with nwrspeciesr.
 ## Pulls current refuge units from the FWS Unit REST API via fwsunitr.
-## Run when the refuge roster changes to regenerate data/refuges.rda.
+## Snapshot generated 2026-09-02. Run when the refuge roster changes to
+## regenerate data/refuges.rda.
 
 # install.packages("pak"); pak::pak("USFWS/fwsunitr")
-library(fwsunitr)
-
-u <- get_unit(type = "refuge")
+u <- fwsunitr::get_unit(type = "refuge")
 
 refuges <- tibble::tibble(
   refuge_code = u$unit_code,

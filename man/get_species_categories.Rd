@@ -14,7 +14,8 @@ A tibble of category names.
 }
 \description{
 Queries the \code{SpeciesList/categories} endpoint for the category names
-accepted by \code{\link[=get_species_list]{get_species_list()}}.
+accepted by \code{\link[=get_species_list]{get_species_list()}}. The default lookup is for API version 1.0;
+supply \code{api_version} explicitly when using another API version.
 }
 \examples{
 \dontrun{

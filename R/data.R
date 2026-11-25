@@ -4,7 +4,8 @@
 #' names, used by [get_species_list()] and [download_species_list()] to resolve
 #' a `refuge_name` argument to the `RefugeCode` the NWRSpecies API expects.
 #'
-#' This is a bundled snapshot. For a live table, use [get_refuges()], which
+#' This is a bundled snapshot generated from the FWS Unit REST API on
+#' 2026-09-02. For a live table, use [get_refuges()], which
 #' pulls current refuge units from the FWS Unit REST API via the \pkg{fwsunitr}
 #' package. Regenerate the snapshot with `data-raw/refuges.R`.
 #'

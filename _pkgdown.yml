@@ -2,3 +2,33 @@ url: https://usfws.github.io/nwrspeciesr/
 template:
   bootstrap: 5
   light-switch: true
+
+articles:
+- title: Tutorials
+  navbar: Tutorials
+  contents:
+  - species-occurrence
+  - upload-edit-species-occurrence
+
+reference:
+- title: Species data
+  contents:
+  - get_species_list
+  - download_species_list
+- title: Lookups
+  contents:
+  - get_species_categories
+  - get_species_occurrences
+  - get_refuges
+- title: Upload and edit
+  contents:
+  - get_upload_permissions
+  - create_species_record
+  - create_species_records
+  - replace_species_record
+  - replace_species_records
+  - add_species_evidence
+- title: Package
+  contents:
+  - nwrspeciesr-package
+  - refuges

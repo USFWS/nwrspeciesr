@@ -6,7 +6,7 @@
 #' or as a live alternative to the bundled [refuges] dataset.
 #'
 #' @details
-#' Requires the suggested \pkg{fwsunitr} package. The returned `refuge_code`
+#' Uses the automatically installed \pkg{fwsunitr} package. The returned `refuge_code`
 #' values are the unit (cost center) codes the NWRSpecies API expects as
 #' `RefugeCode`. `region_number` is derived from the Unit API region code
 #' (e.g. "R0007" becomes 7).
@@ -21,11 +21,6 @@
 #' get_species_list(refuge_name = "Kenai", crosswalk = get_refuges())
 #' }
 get_refuges <- function() {
-  rlang::check_installed(
-    "fwsunitr",
-    reason = "to retrieve the refuge crosswalk."
-  )
-
   u <- fwsunitr::get_unit(type = "refuge")
 
   tibble::tibble(

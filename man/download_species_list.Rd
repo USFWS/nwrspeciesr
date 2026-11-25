@@ -15,7 +15,8 @@ download_species_list(
   sort_by = NULL,
   rows_per_page = NULL,
   page_number = NULL,
-  api_version = .nwrs_api_version
+  api_version = .nwrs_api_version,
+  path = NULL
 )
 }
 \arguments{
@@ -50,9 +51,13 @@ Validated against the documented category set; see
 \item{page_number}{Integer scalar. Page to return (API default 1).}
 
 \item{api_version}{Character scalar. Required API version.}
+
+\item{path}{Optional file path. If supplied, the CSV is written to this path
+and the path is returned instead of parsing the file into a tibble.}
 }
 \value{
-A tibble parsed from the returned CSV.
+A tibble parsed from the returned CSV, or \code{path} when \code{path} is
+supplied.
 }
 \description{
 Queries the CSV-only \code{SpeciesList/items/DownloadFile} endpoint. Combined

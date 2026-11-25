@@ -19,3 +19,13 @@ test_that("get_species_occurrences hits the (misspelled) occurences path", {
   expect_match(captured$url, "SpeciesList/occurences")
   expect_s3_class(res, "tbl_df")
 })
+
+
+test_that("API errors have a package-specific class", {
+  httr2::local_mocked_responses(list(mock_json("{}", status = 400L)))
+
+  expect_error(
+    get_species_categories(),
+    class = "nwrspeciesr_api_error"
+  )
+})

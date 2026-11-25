@@ -1,7 +1,8 @@
 #' Get valid NWRSpecies taxonomic categories
 #'
 #' Queries the `SpeciesList/categories` endpoint for the category names
-#' accepted by [get_species_list()].
+#' accepted by [get_species_list()]. The default lookup is for API version 1.0;
+#' supply `api_version` explicitly when using another API version.
 #'
 #' @param api_version Character scalar. Required API version.
 #'
@@ -22,8 +23,10 @@ get_species_categories <- function(api_version = .nwrs_api_version) {
 #' Get valid NWRSpecies occurrence values
 #'
 #' Queries the `SpeciesList/occurences` endpoint for the occurrence values
-#' accepted by [get_species_list()]. Note the endpoint path is spelled
-#' "occurences" (single r) in the API and is used as-is.
+#' accepted by [get_species_list()]. The default lookup is for API version 1.0;
+#' supply `api_version` explicitly when using another API version. Note the
+#' endpoint path is spelled "occurences" (single r) in the API and is used
+#' as-is.
 #'
 #' @param api_version Character scalar. Required API version.
 #'

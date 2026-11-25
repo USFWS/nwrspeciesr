@@ -22,3 +22,25 @@ test_that("download_species_list uses the DownloadFile path", {
 
   expect_match(captured$url, "SpeciesList/items/DownloadFile")
 })
+
+
+test_that("download_species_list can save the response to a file", {
+  path <- file.path(tempdir(), "species-list.csv")
+  httr2::local_mocked_responses(list(mock_csv(sample_species_csv)))
+
+  result <- download_species_list(path = path)
+
+  expect_identical(result, path)
+  expect_true(file.exists(path))
+  expect_identical(
+    rawToChar(readBin(path, "raw", file.info(path)$size)),
+    sample_species_csv
+  )
+})
+
+test_that("download_species_list validates the output path", {
+  expect_error(
+    download_species_list(path = character()),
+    "single non-missing file path"
+  )
+})

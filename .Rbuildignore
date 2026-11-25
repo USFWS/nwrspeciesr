@@ -10,3 +10,7 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^\.posit/assistant$
+^AGENTS\.md$
+^NWRSpecies_API_Allowed_Values\.csv$
+^nwrspecies_new_api_upload_user_guide_v3\.pdf$
