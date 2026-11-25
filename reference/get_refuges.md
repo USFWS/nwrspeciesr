@@ -22,10 +22,10 @@ A tibble with columns `refuge_code`, `refuge_name`, and `region_number`.
 
 ## Details
 
-Requires the suggested fwsunitr package. The returned `refuge_code`
-values are the unit (cost center) codes the NWRSpecies API expects as
-`RefugeCode`. `region_number` is derived from the Unit API region code
-(e.g. "R0007" becomes 7).
+Uses the automatically installed fwsunitr package. The returned
+`refuge_code` values are the unit (cost center) codes the NWRSpecies API
+expects as `RefugeCode`. `region_number` is derived from the Unit API
+region code (e.g. "R0007" becomes 7).
 
 ## Examples
 

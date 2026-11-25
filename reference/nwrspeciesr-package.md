@@ -24,6 +24,14 @@ values from the public web services.
 - [`get_species_occurrences()`](https://usfws.github.io/nwrspeciesr/reference/get_species_occurrences.md)
   returns valid occurrence values.
 
+## Uploading and editing records
+
+The upload functions target internal, write-enabled endpoints and
+require an API key in `NWRSPECIES_API_KEY`. They default to the staging
+server at `https://staging-iris.fws.gov/APPS/SpeciesAPI/` while the
+upload API is under testing. These functions can modify NWRSpecies data;
+review records and permissions carefully before use.
+
 ## API details
 
 All functions target the public web services at

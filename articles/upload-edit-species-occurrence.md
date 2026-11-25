@@ -1,0 +1,279 @@
+# Adding and editing species occurrence data
+
+## Overview
+
+`nwrspeciesr` provides experimental functions for adding and editing
+species occurrence records through the authenticated `SpeciesUpload`
+API. This article uses Tetlin National Wildlife Refuge to demonstrate a
+cautious workflow:
+
+1.  load an API key without placing it in a script;
+2.  identify refuges writable by the key;
+3.  create a test occurrence record;
+4.  capture the returned `speciesId`;
+5.  add evidence to the created record; and
+6.  replace one or more records when a full replacement is appropriate.
+
+These operations modify staging data. Run them only with an API key
+intended for the staging service, and use a test record and test
+evidence URL. The examples are not evaluated while the package website
+is built.
+
+## Write operations are not reversible
+
+The upload functions can create or modify NWRSpecies records. Confirm
+the refuge, taxon, payload, and permissions before sending each request.
+Never put an API key directly in a script, README, or version-controlled
+file.
+
+## Configure the API key
+
+The upload functions read `NWRSPECIES_API_KEY` when `api_key = NULL`.
+Store the key in a user-level `.Renviron` file and restart R before
+using it:
+
+``` r
+
+# Check only whether the key is available; do not print the key.
+nzchar(Sys.getenv("NWRSPECIES_API_KEY", unset = ""))
+```
+
+The upload API defaults to the staging endpoint:
+
+``` text
+https://staging-iris.fws.gov/APPS/SpeciesAPI/api/
+```
+
+The package does not expose the API key in returned objects or error
+messages.
+
+## Check upload permissions
+
+Start by asking the API which refuge units the key can modify:
+
+``` r
+
+library(nwrspeciesr)
+
+permissions <- get_upload_permissions()
+permissions
+```
+
+Do not assume that a key can edit every refuge. A successful permissions
+request only establishes which refuge units are writable; it does not
+authorize every species record or every operation.
+
+Find the Tetlin entry in the returned table and use its `refugeCode`.
+Inspect column names first because the service response can change:
+
+``` r
+
+names(permissions)
+```
+
+For example, after confirming the Tetlin row in the printed permissions
+table, assign its code explicitly:
+
+``` r
+
+tetlin_code <- "FF07RTET00"
+```
+
+If Tetlin is not listed in `permissions`, stop here. The API key must be
+authorized for Tetlin before creating or editing records there. Do not
+use a code copied from another refuge or guess a code from a name.
+
+## Create a test occurrence record
+
+A new record requires `refugeCode` and `taxonCode`. The remaining
+creation fields receive documented API defaults. The example uses a
+taxon code only as a demonstration; replace it with the approved ITIS
+TSN for the species in your test record.
+
+``` r
+
+created <- create_species_record(
+  list(
+    refugeCode = tetlin_code,
+    taxonCode = 93710
+  )
+)
+
+created
+created$speciesId
+```
+
+The returned `speciesId` identifies the created record. Save it for
+subsequent operations rather than using an arbitrary ID from another
+environment:
+
+``` r
+
+test_species_id <- created$speciesId
+```
+
+New records default to a draft status and to conservative control
+values. Check the response before proceeding.
+
+## Add evidence to the test record
+
+[`add_species_evidence()`](https://usfws.github.io/nwrspeciesr/reference/add_species_evidence.md)
+adds URL-based evidence to an existing record. Identify the record with
+`speciesId`, provide an ISO-formatted observation date, provide a date
+precision ID from the API documentation, and set at least one evidence
+type to `TRUE`.
+
+``` r
+
+evidence_result <- add_species_evidence(
+  list(
+    speciesId = test_species_id,
+    url = "https://example.gov/report/123",
+    observationDate = "2026-05-14",
+    datePrecisionId = 1,
+    photograph = TRUE
+  )
+)
+
+evidence_result
+```
+
+Use a real, stable, publicly accessible evidence URL appropriate for the
+record. The example URL is only a placeholder and may not be suitable
+evidence for an actual record.
+
+## Replace one record
+
+[`replace_species_record()`](https://usfws.github.io/nwrspeciesr/reference/replace_species_record.md)
+performs a **full replacement** of one existing record. It is not a
+partial update. Include every field that should remain on the record,
+including the required control fields `status`, `refugeAccepted`, and
+`isSensitive`.
+
+Before replacing a record, obtain or construct the complete intended
+payload. Do not send a list containing only the field you want to
+change.
+
+``` r
+
+replacement <- list(
+  refugeCode = tetlin_code,
+  taxonCode = 93710,
+  status = "Draft",
+  refugeAccepted = "Undecided",
+  isSensitive = "No",
+  occurrence = "Present",
+  occurrenceNote = "Test record for staging workflow"
+)
+
+replaced <- replace_species_record(replacement)
+replaced
+```
+
+The replacement payload must follow the API’s allowed fields and values.
+In a production workflow, preserve all existing fields that should
+remain before sending the replacement.
+
+## Replace multiple records in a batch
+
+[`replace_species_records()`](https://usfws.github.io/nwrspeciesr/reference/replace_species_records.md)
+is different from
+[`replace_species_record()`](https://usfws.github.io/nwrspeciesr/reference/replace_species_record.md):
+it sends multiple full replacement records in one all-or-nothing batch
+request. It accepts at most 25 records.
+
+``` r
+
+batch_replacements <- list(
+  list(
+    refugeCode = tetlin_code,
+    taxonCode = 93710,
+    status = "Draft",
+    refugeAccepted = "Undecided",
+    isSensitive = "No",
+    occurrence = "Present"
+  ),
+  list(
+    refugeCode = tetlin_code,
+    taxonCode = 93711,
+    status = "Draft",
+    refugeAccepted = "Undecided",
+    isSensitive = "No",
+    occurrence = "Probably Present"
+  )
+)
+
+replace_species_records(batch_replacements)
+```
+
+Use
+[`replace_species_record()`](https://usfws.github.io/nwrspeciesr/reference/replace_species_record.md)
+for one record and
+[`replace_species_records()`](https://usfws.github.io/nwrspeciesr/reference/replace_species_records.md)
+when several records should be replaced together. Because the batch
+request is all-or-nothing, validate every record before submitting the
+batch.
+
+## Create multiple records
+
+For comparison,
+[`create_species_records()`](https://usfws.github.io/nwrspeciesr/reference/create_species_records.md)
+creates new records in one batch request and accepts up to 200 records.
+It does not replace existing records.
+
+``` r
+
+create_species_records(list(
+  list(refugeCode = tetlin_code, taxonCode = 93710),
+  list(refugeCode = tetlin_code, taxonCode = 93711)
+))
+```
+
+Use creation functions for new records and replacement functions for
+existing records. Do not use a creation function to try to edit a
+record.
+
+## Troubleshooting authorization errors
+
+The HTTP status helps distinguish common problems:
+
+| Status | Interpretation |
+|:--:|----|
+| `400` | The request reached the API but failed validation. Inspect `error$response_body` for the invalid or missing field. |
+| `401` | The API key was missing or not accepted. |
+| `403` | The key was accepted but is not authorized for the requested refuge, record, or operation. |
+| `404` | The endpoint or base URL is incorrect. |
+
+To inspect the API validation response without exposing the key:
+
+``` r
+
+tryCatch(
+  create_species_record(
+    list(refugeCode = tetlin_code, taxonCode = 93710)
+  ),
+  error = function(error) {
+    error$response_body
+  }
+)
+```
+
+Do not include the API key or full authenticated request object when
+reporting an error.
+
+## Reproducibility and cleanup
+
+Record the package version, staging endpoint, refuge code, taxon code,
+and request date for each test. Keep test records identifiable as
+staging tests and follow your local process for cleanup or review after
+testing.
+
+``` r
+
+list(
+  retrieved = format(Sys.time(), tz = "UTC"),
+  package_version = as.character(utils::packageVersion("nwrspeciesr")),
+  refuge_code = tetlin_code,
+  taxon_code = 93710
+)
+```

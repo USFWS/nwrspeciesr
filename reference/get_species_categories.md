@@ -3,6 +3,8 @@
 Queries the `SpeciesList/categories` endpoint for the category names
 accepted by
 [`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md).
+The default lookup is for API version 1.0; supply `api_version`
+explicitly when using another API version.
 
 ## Usage
 

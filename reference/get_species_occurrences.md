@@ -3,8 +3,9 @@
 Queries the `SpeciesList/occurences` endpoint for the occurrence values
 accepted by
 [`get_species_list()`](https://usfws.github.io/nwrspeciesr/reference/get_species_list.md).
-Note the endpoint path is spelled "occurences" (single r) in the API and
-is used as-is.
+The default lookup is for API version 1.0; supply `api_version`
+explicitly when using another API version. Note the endpoint path is
+spelled "occurences" (single r) in the API and is used as-is.
 
 ## Usage
 

@@ -43,7 +43,8 @@ fwsunitr package. See `data-raw/refuges.R`.
 
 ## Details
 
-This is a bundled snapshot. For a live table, use
+This is a bundled snapshot generated from the FWS Unit REST API on
+2026-09-02. For a live table, use
 [`get_refuges()`](https://usfws.github.io/nwrspeciesr/reference/get_refuges.md),
 which pulls current refuge units from the FWS Unit REST API via the
 fwsunitr package. Regenerate the snapshot with `data-raw/refuges.R`.

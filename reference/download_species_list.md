@@ -19,7 +19,8 @@ download_species_list(
   sort_by = NULL,
   rows_per_page = NULL,
   page_number = NULL,
-  api_version = .nwrs_api_version
+  api_version = .nwrs_api_version,
+  path = NULL
 )
 ```
 
@@ -83,9 +84,15 @@ download_species_list(
 
   Character scalar. Required API version.
 
+- path:
+
+  Optional file path. If supplied, the CSV is written to this path and
+  the path is returned instead of parsing the file into a tibble.
+
 ## Value
 
-A tibble parsed from the returned CSV.
+A tibble parsed from the returned CSV, or `path` when `path` is
+supplied.
 
 ## Examples
 
