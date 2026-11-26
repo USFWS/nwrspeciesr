@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   species-occurrence: species-occurrence.html
   upload-edit-species-occurrence: upload-edit-species-occurrence.html
-last_built: 2026-11-25T22:57Z
+last_built: 2026-11-26T00:20Z
 urls:
   reference: https://usfws.github.io/nwrspeciesr/reference
   article: https://usfws.github.io/nwrspeciesr/articles
